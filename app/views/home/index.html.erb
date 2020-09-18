@@ -1,2 +1,90 @@
-<h1>Home page</h1>
+<h1>Home page</h1> 
+<div class ="create">
+    <% if user_signed_in? %>
+        <a href="<%= user_path(current_user)%>">
+          <i class="fa fa-user"></i>
+        </a>
+    <% else %>
+        <a href="<%= new_user_session_path%>">
+          <i class="fa fa-sign-in"></i>
+        </a>
+    <% end %>
+
+
+<!-- Trigger the modal with a button -->
+    <i class="fa fa-plus" aria-hidden="true"class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"><%= link_to "",new_post_path%></i>
+
+<!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">create post</h4>
+          </div>
+          <div class="modal-body">
+          <p>
+            <%if user_signed_in? %>
+              <%= form_for Post.new do |f| %>
+                <div class="form-group">
+                  <%= f.text_field :description %>
+                </div>
+                <div class="form-group">
+                  <%= f.file_field :image %>
+                </div>
+                <div class="form-group">
+                  <%#= f.text_field :user_id, value: current_user.id, class:'d-none'%>
+                </div>
+                <br>
+                <div class="text-center">
+                  <%= f.submit 'Create Post', class: 'btn btn-primary' %>
+                </div>
+              <% end %>
+            <% end %>
+
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+<% if user_signed_in? %>
+
+
+<div class="posts">
+  <% @posts.each do |post| %>
+    <section class="post">
+  <div class="user">
+  <div class="avatar">
+    <% if post.user.avatar.attached? %>
+      <%= link_to user_path(post.user) do %>
+        <%= image_tag post.user.avatar ,:size => "40x40"%>
+      <% end %>
+    <% end %>
+    <%= link_to post.user.username, user_path(post.user), class: 'username' %>
+  </div>
+  
+</div>
+  <%= image_tag post.image, class: 'main-image' %>
+  <div class="description">
+    <% post.description.to_s.split(' ').each do |word| %>
+      <% if word.start_with?('#') %>
+        <%= link_to word, search_path(query: word) %>
+      <%else %>
+        <%= word %>
+      <%end %>
+    <% end %>
+  </div>
+</section>
+  <% end %>
+</div>
+<%end %>
+  
 

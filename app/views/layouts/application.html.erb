@@ -18,6 +18,7 @@
 
 
     <!--Navigation Bar-->
+   
     <nav class="navbar navbar-light bg-light d-flex">
       <div class="container">
         <div class="logo">
@@ -28,13 +29,27 @@
         </div>
         <div class="m-auto">
           <form class="form-inline search-form">
-            <input class="form-control mr-sm-2" type="search" placeholder="@search" aria-label="Search">
+            <!-- <input class="form-control mr-sm-2" type="search" placeholder="@search" aria-label="Search"> -->
+            <%= form_with url: search_path(:query), method: :get, local: true, class: 'form-inline search-form' do |form| %>
+            <%#byebug%>
+              <%= form.text_field :query, value: params[:query], class: 'form-control mr-sm-2', placeholder: '#search' %>
+            <% end %>
           </form>
         </div>
         <div class="user-section">
           <a><i class="fa fa-compass"></i></a>
           <a><i class="fa fa-heart"></i></a>
-          <a><i class="fa fa-user"></i></a>
+          <a><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-user"></i><span class="caret"></span></a>
+          <li class="dropdown">
+                          
+            <ul class="dropdown-menu">
+              <li><a href="#"><%= link_to 'logout',destroy_user_session_path, method: :delete %></a>
+                </li>
+                            
+            </ul>
+          </li>
+        </a>
+          
         </div>
 
       </div>
@@ -43,18 +58,13 @@
     <!--Main content-->
     <main class="container" style="min-height: 500px;">
       <%= yield %>
+     
+
 
 
     </main>
-    <% if user_signed_in? %>
-        <a href="<%= user_path(current_user)%>">
-          <i class="fa fa-user"></i>
-        </a>
-      <% else %>
-        <a href="<%= new_user_session_path%>">
-          <i class="fa fa-sign-in"></i>
-        </a>
-      <% end %>
+    
+    
 
     <!--Footer-->
     <footer class="container footer">
@@ -76,6 +86,6 @@
         <p> © 2018 INSTAGRAM </p>
       </nav>
     </footer>
-
+    
   </body>
 </html>

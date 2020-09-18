@@ -1,0 +1,27 @@
+<div class="posts">
+  <% @posts.each do |post| %>
+    <section class="post">
+      <div class="user">
+        <div class="avatar">
+      <!-- <img src="user_avatar.jpg"> -->
+          <% if post.user.avatar.attached? %>
+            <%= image_tag post.user.avatar ,:size => "40x40"%>
+          <% end %>
+          <%#= post.user.username%> <%= link_to post.user.username, user_path(post.user), class: 'username' %>
+    
+        </div>
+        
+      </div>
+      <%= link_to post_path(post) do%>
+        <%= image_tag post.image, class: 'main-image' %>
+      <% end %>
+
+      <div class="description" style="padding-top:30px;">
+        <%= post.description %>
+      </div>
+      <%#= paginate @posts %>
+
+    </section>
+  <% end %>
+</div>
+  
